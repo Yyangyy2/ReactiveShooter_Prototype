@@ -1,0 +1,25 @@
+[gd_scene load_steps=6 format=3 uid="uid://dkoiqtadti8yb"]
+
+[ext_resource type="Script" path="res://scripts/Player.gd" id="1_rda3a"]
+[ext_resource type="Texture2D" uid="uid://c0g7c5oligr5v" path="res://assets/icon.svg" id="2_obeyd"]
+[ext_resource type="PackedScene" uid="uid://di4aap86koq2i" path="res://scene/health.tscn" id="3_poi07"]
+[ext_resource type="PackedScene" uid="uid://4x1yib3nuvak" path="res://scene/Weapon/weapon.tscn" id="4_qcqse"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_cmtfw"]
+radius = 70.0286
+
+[node name="Player" type="CharacterBody2D" groups=["player"]]
+position = Vector2(312, 319)
+script = ExtResource("1_rda3a")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_obeyd")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 1)
+shape = SubResource("CircleShape2D_cmtfw")
+
+[node name="Health" parent="." instance=ExtResource("3_poi07")]
+
+[node name="Weapon" parent="." instance=ExtResource("4_qcqse")]
+position = Vector2(56, 1)

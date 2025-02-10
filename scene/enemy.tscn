@@ -1,0 +1,49 @@
+[gd_scene load_steps=8 format=3 uid="uid://bs827e46ribel"]
+
+[ext_resource type="Script" path="res://scripts/Player.gd" id="1_g6km5"]
+[ext_resource type="Texture2D" uid="uid://85g578fej1om" path="res://assets/enemy1.png" id="2_l7qin"]
+[ext_resource type="PackedScene" uid="uid://di4aap86koq2i" path="res://scene/health.tscn" id="3_7wmwc"]
+[ext_resource type="PackedScene" uid="uid://4x1yib3nuvak" path="res://scene/Weapon/weapon.tscn" id="4_fxrm6"]
+[ext_resource type="Script" path="res://scripts/ai.gd" id="4_mjt5w"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_cmtfw"]
+radius = 70.0286
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_gnvqt"]
+radius = 435.225
+
+[node name="Enemy" type="CharacterBody2D" groups=["enemy"]]
+position = Vector2(0, -1)
+script = ExtResource("1_g6km5")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(2, -18)
+scale = Vector2(0.302252, 0.271447)
+texture = ExtResource("2_l7qin")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 1)
+shape = SubResource("CircleShape2D_cmtfw")
+
+[node name="Health" parent="." instance=ExtResource("3_7wmwc")]
+
+[node name="Weapon" parent="." instance=ExtResource("4_fxrm6")]
+position = Vector2(56, 1)
+
+[node name="AI" type="Node2D" parent="."]
+script = ExtResource("4_mjt5w")
+
+[node name="PlayerDectectionZone" type="Area2D" parent="AI"]
+position = Vector2(-1, 2)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AI/PlayerDectectionZone"]
+position = Vector2(1, -1)
+shape = SubResource("CircleShape2D_gnvqt")
+
+[node name="PatrolTimer" type="Timer" parent="AI"]
+wait_time = 3.0
+one_shot = true
+
+[connection signal="body_entered" from="AI/PlayerDectectionZone" to="AI" method="_on_player_dectection_zone_body_entered"]
+[connection signal="body_exited" from="AI/PlayerDectectionZone" to="AI" method="_on_player_dectection_zone_body_exited"]
+[connection signal="timeout" from="AI/PatrolTimer" to="AI" method="_on_patrol_timer_timeout"]
